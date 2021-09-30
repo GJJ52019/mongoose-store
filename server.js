@@ -2,6 +2,7 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
+const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const Products = require('./models/products.js');
 
@@ -22,7 +23,7 @@ db.on('disconnected', () => console.log('mongo disconnected'));
 
 // Body parser middleware: give us access to req.body
 app.use(express.urlencoded({ extended: true }));
-
+app.use(methodOverride('_method'));
 
 //========================================================================
 //routes
@@ -46,14 +47,14 @@ app.get('/store/seed', (req, res) => {
         [{
             name: 'Turtles',
             description: 'Hard and crunchy',
-            img: null,
+            img: 'https://i.imgur.com/DrIDSET.jpeg',
             price: 45.00,
             qty: 7
         },
         {
             name: 'Cobras',
-            description: 'non-venomous slithery long boys',
-            img: null,
+            description: 'non-venomous slithery snek',
+            img: 'https://i.imgur.com/lDUkcgq.jpeg',
             price: 345.00,
             qty: 34
 
@@ -61,28 +62,28 @@ app.get('/store/seed', (req, res) => {
         {
             name: 'Chicken',
             description: 'taste like everything',
-            img: null,
+            img: 'https://i.imgur.com/uIU7x1z.jpeg',
             price: 25.00,
             qty: 2
         },
         {
             name: 'Lizard(small)',
             description: 'Small and quick',
-            img: null,
+            img: 'https://i.imgur.com/UNo3H3j.jpeg',
             price: 5.00,
             qty: 179
         },
         {
             name: 'Lizard(medium)',
             description: 'Tough and chewy',
-            img: null,
+            img: 'https://i.imgur.com/99OBQVV.jpeg',
             price: 15.00,
             qty: 18
         },
         {
             name: 'Lizard(large)',
             description: 'It is a Komodo Dragon',
-            img: null,
+            img: 'https://i.imgur.com/MZaRFpk.jpeg',
             price: 155.00,
             qty: 0
         },
@@ -100,11 +101,39 @@ app.get('/store/seed', (req, res) => {
     );
 });
 
+
+// DELETE
+app.delete('/store/:id', (req, res) => {
+    // res.send('deleting...');
+    Products.findByIdAndDelete(req.params.id, (err, data) => {
+        res.redirect('/store');
+    });
+});
+
+// UPDATE
+app.put('/store/:id', (req, res) => {
+    
+	Products.findByIdAndUpdate(req.params.id, req.body, {
+		new: true
+	}, (error, updatedProduct) => {
+		res.redirect(`/store/${req.params.id}`);
+	});
+});
+
 //create
 app.post('/store', (req, res) => {
     Products.create(req.body, (error, createdProduct) => {
         res.redirect('/store');
     });
+});
+
+// EDIT
+app.get('/store/:id/edit', (req, res) => {
+	Products.findById(req.params.id, (error, foundProduct) => {
+		res.render('edit.ejs', {
+			product: foundProduct
+		});
+	});
 });
 
 // Show

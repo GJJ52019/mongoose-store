@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>New Product</title>
+	</head>
+	<body>
+		<h1>New Product</h1>
+		<form form action="/store/<%=product._id%>?_method=PUT" method="POST">
+			Name: <input type="text" name="name" value="<%=product.name%>"/><br />
+			Description: <input type="textarea" name="description" value="<%=product.desciption%>"/><br />
+            Image link: <input type="textarea" name="img" value ="<%=product.img%>"/><br />
+			Price: <input type="number" name="price" value ="<%=product.price%>" /><br />
+            Quanity: <input type="number" name="qty" value="<%=product.qty%>"/><br />
+			<input type="submit" name="" value="update Item" />
+		</form>
+	</body>
+	</body>
+</html>

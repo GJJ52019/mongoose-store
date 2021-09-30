@@ -13,7 +13,12 @@
         </nav>
 		<ul>
 			<% products.forEach(product => { %>
-			<li><a href="/store/<%=product._id; %>"> <%=product.name; %> </a></li>
+			<li><a href="/store/<%=product._id; %>"> <%=product.name; %> </a>
+                <form action="/store/<%= product.id %>?_method=DELETE" method="POST" style="display: inline; margin-left: 16px;">
+					<input type="submit" value="DELETE"/>
+				</form>
+				<a href="/store/<%=product._id %>/edit">Edit</a>
+            </li>
 			<% }) %>
 		</ul>
 </html>
